@@ -12,17 +12,37 @@ if ! [ -e "$1" ]; then
     exit 1
 fi
 
-CHOICE="$(echo "run $1
-nope" | imenu -l)"
+CHOICE="$(echo "run AppImage $1
+:gInstall to Applications folder
+:rClose menu" | imenu -l -i "instantLAUNCH")"
 case "$CHOICE" in
 run*)
     echo "running"
+    chmod +x "$1"
+    IMGPATH="$(realpath "$1")"
+    cd "${IMGPATH%/*}" || exit 1
+    ./"$1"
     ;;
-nope)
+*folder)
+    [ -e ~/Applications ] || mkdir ~/Applications || exit 1
+    chmod +x "$1"
+    cp "$1" ~/Applications/
+    if ! [ -e ~/.local/bin/appimaged ]; then
+        mkdir -p ~/.cache/instantlaunch
+        cd ~/.cache/instantlaunch || exit 1
+        wget "https://github.com/AppImage/appimaged/releases/download/continuous/appimaged-x86_64.AppImage"
+        chmod +x ./*.AppImage
+        ./appimaged-x86_64.AppImage --install
+        sleep 1
+    fi
+    notify-send "installing appimage to applications folder"
+    timeout 30 ~/.local/bin/appimaged
+    echo "installing AppImage to applications folder"
+    echo 'your appimage has been installed to the applications folder.
+This makes it accessible from the global application launcher'
+    ;;
+*menu)
     echo "not running"
     exit
     ;;
 esac
-
-chmod +x "$1"
-"$1"
