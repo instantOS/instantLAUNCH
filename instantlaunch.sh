@@ -26,20 +26,21 @@ run*)
 *folder)
     [ -e ~/Applications ] || mkdir ~/Applications || exit 1
     chmod +x "$1"
-    cp "$1" ~/Applications/
+    mv "$1" ~/Applications/
     if ! [ -e ~/.local/bin/appimaged ]; then
         mkdir -p ~/.cache/instantlaunch
         cd ~/.cache/instantlaunch || exit 1
+        notify-send "downloading needed files"
         wget "https://github.com/AppImage/appimaged/releases/download/continuous/appimaged-x86_64.AppImage"
         chmod +x ./*.AppImage
         ./appimaged-x86_64.AppImage --install
         sleep 1
     fi
     notify-send "installing appimage to applications folder"
-    timeout 30 ~/.local/bin/appimaged
+    timeout 30 ~/.local/bin/appimaged &
     echo "installing AppImage to applications folder"
-    echo 'your appimage has been installed to the applications folder.
-This makes it accessible from the global application launcher'
+    echo 'your appimage has been installed to the Applications folder.
+This makes it accessible from the global application launcher' | imenu -M
     ;;
 *menu)
     echo "not running"
