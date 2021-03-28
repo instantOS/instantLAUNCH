@@ -10,4 +10,4 @@ install:
 uninstall:
 	rm ${DESTDIR}${PREFIX}bin/instantlaunch
 	rm ${DESTDIR}${PREFIX}share/applications/instantlaunch.desktop
-	rm ${DESTDIR}${PREFIX}share/mime/pacakges/xml/appimage.xml
+	rm ${DESTDIR}${PREFIX}share/mime/packages/xml/appimage.xml
