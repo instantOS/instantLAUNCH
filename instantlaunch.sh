@@ -21,7 +21,7 @@ run*)
     chmod +x "$1"
     IMGPATH="$(realpath "$1")"
     cd "${IMGPATH%/*}" || exit 1
-    bash -c "$1"
+    bash -c "./'$1'"
     ;;
 *folder)
     [ -e ~/Applications ] || mkdir ~/Applications || exit 1
