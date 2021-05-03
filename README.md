@@ -1,2 +1,3 @@
 # instantLAUNCH
-An appimage helper for instantOS
+
+Launcher for different kinds of application types
