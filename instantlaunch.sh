@@ -23,7 +23,7 @@ if grep -q '\.AppImage$' <<<"$1"; then
         chmod +x "$1"
         IMGPATH="$(realpath "$1")"
         cd "${IMGPATH%/*}" || exit 1
-        bash -c "./'$1'"
+        "$IMGPATH"
         ;;
     *folder)
         [ -e ~/Applications ] || mkdir ~/Applications || exit 1
