@@ -77,4 +77,26 @@ elif grep -q '\.desktop$' <<<"$1" && file "$1" | grep -q 'text' && grep -q '\[De
         ;;
     esac
 
+elif grep -q '\.flatpakref$' <<<"$1" && file "$1" | grep -q 'text' && grep -q '\[Flatpak Ref\]' "$1"; then
+    FLATPAKNAME="$(grep -o '^Name=.*' "$1" | head -1 | sed 's/^[^=]*=//g')"
+    echo "$FLATPAKNAME"
+    [ -z "$FLATPAKNAME" ] && {
+        imenu -E "flatpakref invalid"
+        exit 1
+    }
+    if flatpak list | grep -q "$FLATPAKNAME"; then
+        echo "flatpak already installed"
+        imenu -t 'opening flatpak application'
+        flatpak run "$FLATPAKNAME"
+        exit
+    fi
+
+    realpath "$1"
+
+    if imenu -c "application needs to download additional data. continue?"; then
+        instantutils open terminal -e bash -c "flatpak install '$(realpath "$1")' && notify-send 'flatpak installed successfully' && flatpak run '$FLATPAKNAME'"
+    else
+        notify-send 'flatpak installation aborted'
+    fi
+
 fi

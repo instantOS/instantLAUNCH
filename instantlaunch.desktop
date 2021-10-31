@@ -6,6 +6,6 @@ Name=instantLAUNCH
 Icon=AppImageLauncher
 Terminal=false
 Categories=Utility;
-MimeType=application/x-iso9660-appimage;application/x-appimage;application/vnd.appimage;
+MimeType=application/x-iso9660-appimage;application/x-appimage;application/vnd.appimage;application/vnc.flatpak.ref
 NoDisplay=true
 X-AppImage-Integrate=false
